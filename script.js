@@ -3,31 +3,17 @@ const checkBtn = document.getElementById('checkWeather');
 const displayOutput = document.getElementById('output');
 
 async function getWeather(city) {
-    let weather = await fetch("url", {
+    let weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=2abad075f6dca03e7b1b8e6a413b2669&units=metric`);    
 
-        method: POST,
-
-        headers: {
-           "Content-Type": "application/JSON"
-        },
-
-        body: JSON.stringify({
-            title: cityName,
-            body: "Weather forecast data",
-            userId: 1
-        })
-    })
-    
-    let data = await weather.json();
+    let data = await weatherResponse.json();
 
     return data;
-
 }
 
 checkBtn.addEventListener("click", async function (params) {
     let userinput = inputCity.value;
 
-    if (userinput.trim() = "") {
+    if (userinput.trim() === "") {
         displayOutput.textContent = "Plese enter city"
         return;
     }
@@ -37,9 +23,19 @@ checkBtn.addEventListener("click", async function (params) {
 
     let result = await getWeather(userinput);
 
-    displayOutput.textContent = result;
+    let cityName = result.name;
+
+    let cityTemp = result.main.temp;
+
+    let dataDescription = result.weather[0].description;
 
     checkBtn.textContent = "Check";
 
     checkBtn.disabled = false;
+
+    displayOutput.textContent = `
+    city: ${cityName}
+    Temperature: ${cityTemp}°C
+    Condition: ${dataDescription}
+    `;
 })
