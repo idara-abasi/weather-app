@@ -21,7 +21,15 @@ checkBtn.addEventListener("click", async function (params) {
     
     checkBtn.textContent = "Checking...";
 
+    try{
+
     let result = await getWeather(userinput);
+
+    if(result.cod !== 200) {
+
+    throw new Error("City not found");
+
+    }
 
     let cityName = result.name;
 
@@ -29,13 +37,38 @@ checkBtn.addEventListener("click", async function (params) {
 
     let dataDescription = result.weather[0].description;
 
-    checkBtn.textContent = "Check";
+    let weatherIcon = result.weather[0].icon;
+
+    let iconUrl = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
+
+   displayOutput.innerHTML = `
+    <h2>${cityName}</h2>
+    
+    <img src="${iconUrl}" alt="Weather Icon">
+
+    <p>Temperature: ${cityTemp}°C</p>
+
+    <p>Condition: ${dataDescription}</p>
+`;
 
     checkBtn.disabled = false;
 
-    displayOutput.textContent = `
-    city: ${cityName}
-    Temperature: ${cityTemp}°C
-    Condition: ${dataDescription}
-    `;
+    checkBtn.textContent = "Check";
+
+    } catch(error) {
+        displayOutput.textContent = "City not Found";
+
+        checkBtn.disabled = false;
+
+        checkBtn.textContent = "Check";
+
+    }
 })
+
+inputCity.addEventListener("keydown", function(event) {
+    if(event.key === "Enter") {
+        
+        checkBtn.click();
+        
+    }
+});
