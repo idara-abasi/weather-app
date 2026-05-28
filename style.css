@@ -57,3 +57,7 @@ button:hover {
     line-height: 1.8;
     font-size: 18px;
 }
+
+#output img {
+    width: 100px;
+}
