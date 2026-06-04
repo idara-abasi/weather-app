@@ -1,3 +1,9 @@
+
+import {
+    getWeather,
+    getWeatherByCoords
+} from "./weather.js";
+
 const inputCity = document.getElementById('cityName');
 const checkBtn = document.getElementById('checkWeather');
 const displayOutput = document.getElementById('output');
